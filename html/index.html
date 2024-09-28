@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NodeJS Server</title>
+  <style>
+    body {
+      background-color: black;
+      color: green;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+      padding: 5px;
+    }
+    .hexagon {
+      width: 100px;
+      height: 55px;
+      background-color: #43853d;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .hexagon:before, .hexagon:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+    }
+    .hexagon:before {
+      bottom: 100%;
+      border-bottom: 30px solid #43853d;
+    }
+    .hexagon:after {
+      top: 100%;
+      width: 0;
+      border-top: 30px solid #43853d;
+    }
+    .message {
+      margin-top: 25px;
+      color: green;
+      font-size: 20px;
+      text-align: center;
+    }
+    .hint {
+      color: white;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+    .code-block {
+      background-color: #222;
+      color: #00FF00;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    button {
+      background-color: #1c831f; /* Darker green for better contrast */
+      border: none;
+      color: white; /* White text for better contrast */
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      margin: 5px 15px;
+    }
+    button:hover {
+      background-color: #2ab131; /* Darker hover color */
+    }
+    .icon {
+      margin-right: 8px;
+    }
+    .response {
+      color: #00FF00;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .actions-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+    /* Notification styling */
+    .notification {
+      visibility: hidden;
+      opacity: 0;
+      background-color: #4ec04434;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-size: 16px;
+      transition: opacity 0.5s ease-in-out;
+    }
+    .notification.show {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out;
+    }
+    .notification.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease-out;
+    }
+    code {
+      color: #00FF00;
+      background-color: #222;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hexagon"></div>
+  <div class="message">Welcome to our first NodeJS server!</div>
+  <div class="hint">Try our <code>/api/echo</code> endpoint by sending a <code>POST</code> request. Use the following command:</div>
+
+  <div class="code-block" id="curl-command">
+    curl -X POST http://localhost/api/echo -H "Content-Type: application/json" -d '{"message":"Hello, NodeJS!"}'
+  </div>
+
+  <!-- Notification message container -->
+  <div class="notification" id="notification">
+    Curl command copied to clipboard!
+  </div>
+
+  <div class="actions-container">
+    <button onclick="copyToClipboard()"><span class="icon">📋</span> Copy Command</button>
+    <button onclick="executeRequest()"><span class="icon">⚡</span> Execute Command</button>
+  </div>
+
+  <div class="response" id="response-output"></div>
+
+  <script>
+    function copyToClipboard() {
+      const text = document.getElementById('curl-command').innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        showNotification();  // Show inline notification when copy is successful
+      }, function(err) {
+        showNotification('Failed to copy text');  // Show error message if copy fails
+      });
+    }
+
+    // Listen for 'Ctrl + C' to trigger the copy command
+    document.addEventListener('keydown', function(event) {
+      if (event.ctrlKey && event.key === 'c') {
+        event.preventDefault();  // Prevent the default Ctrl + C behavior
+        copyToClipboard();       // Trigger the copy function
+      }
+    });
+
+    function executeRequest() {
+      const payload = {
+        message: 'Hello, NodeJS!'
+      };
+
+      fetch('/api/echo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => {
+        const output = document.getElementById('response-output');
+        output.textContent = 'Server Response: ' + JSON.stringify(data);
+      })
+      .catch(error => {
+        const output = document.getElementById('response-output');
+        output.textContent = 'Error: ' + error;
+      });
+    }
+
+      // Show notification with fading effect
+      function showNotification(message = 'Curl command copied to clipboard!') {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.classList.add('show');
+
+        // Automatically fade out after 3 seconds
+        setTimeout(() => {
+          notification.classList.add('fade-out');
+        }, 3000);
+
+        // Remove fade-out class after transition to hide element completely
+        setTimeout(() => {
+          notification.classList.remove('show', 'fade-out');
+        }, 4000);
+    }
+  </script>
+</body>
+</html>
