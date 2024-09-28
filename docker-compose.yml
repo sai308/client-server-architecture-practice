@@ -4,23 +4,28 @@ services:
       context: .
       dockerfile: Dockerfile
     networks:
-      - app_net
-    # ports:
-    #   - "3000:3000"
+      - app-network
+    ports:
+    #  - "3000:3000"    # Application port
+      - "9229:9229"    # Debugger port
+    volumes:
+      - .:/srv/node/app  # Mount local directory to container
+    environment:
+      - NODE_ENV=development
 
   nginx:
     image: nginx:alpine
     ports:
       - "80:80"
     networks:
-      - app_net
+      - app-network
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./static:/usr/share/nginx/static:ro
       - ./html:/usr/share/nginx/html:ro
     depends_on:
       - app
 
 networks:
-  app_net:
+  app-network:
     driver: bridge
