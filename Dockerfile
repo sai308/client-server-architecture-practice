@@ -30,4 +30,4 @@ EXPOSE 9229
 ENV NODE_ENV=development
 
 # Use nodemon for automatic server reloads in development
-CMD ["nodemon", "--inspect=0.0.0.0:9229", "app.js"]
+CMD ["nodemon", "--inspect=0.0.0.0:9229", "server.js"]

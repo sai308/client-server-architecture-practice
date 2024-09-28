@@ -1,15 +1,23 @@
 {
-  "name": "p1",
+  "name": "client-server-architecture-practice",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "docker-compose up --build -d"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "description": "",
   "devDependencies": {
     "@types/node": "22.5.5"
+  },
+  "dependencies": {
+    "@mgcrea/fastify-request-logger": "1.7.1",
+    "@mgcrea/pino-pretty-compact": "1.3.0",
+    "dotenv": "16.4.5",
+    "fastify": "4.28.1",
+    "pino-pretty": "11.2.2"
   }
 }
