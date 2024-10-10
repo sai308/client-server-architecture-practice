@@ -4,12 +4,12 @@ FROM node:22 AS development
 # Create and set the working directory inside the container
 WORKDIR /srv/node/app
 
+# Install nodemon globally for development environment
+RUN npm install -g nodemon
+
 # Copy package.json and install dependencies
 COPY package*.json ./
 RUN npm install
-
-# Install nodemon globally for development environment
-RUN npm install -g nodemon
 
 # Copy the rest of the application
 COPY . .
