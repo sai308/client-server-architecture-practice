@@ -21,7 +21,7 @@ module.exports = {
         // @ts-ignore - We know that the params is defined
         const targetId = request.params.id;
 
-        const found = await resourceRepository.read(targetId);
+        const found = await resourceRepository.findByPK(targetId);
 
         if (!found) {
           return reply.code(404).send({
