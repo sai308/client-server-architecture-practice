@@ -17,6 +17,14 @@ class PostgresAdapter {
     return this;
   }
 
+  async connect() {
+    const test = await this.#prisma.$queryRaw`SELECT 1=1;`;
+
+    console.log("Connected to Postgres:", test);
+
+    return test;
+  }
+
   get $prisma() {
     return this.#prisma;
   }
@@ -38,4 +46,4 @@ class PostgresAdapter {
 const postgresAdapter = new PostgresAdapter();
 Object.freeze(postgresAdapter);
 
-module.exports = postgresAdapter;
+module.exports = { postgresAdapter };

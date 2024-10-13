@@ -1,4 +1,6 @@
-const { $prisma } = require("./../adapters/postgres");
+const {
+  postgresAdapter: { $prisma },
+} = require("./../adapters/postgres");
 
 // ResourceRepository using Prisma
 
