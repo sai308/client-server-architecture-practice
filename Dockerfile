@@ -12,14 +12,14 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application
-COPY . .
-
-# Change the owner of the project files to the node user
-RUN chown -R node /srv/node/app
+COPY --chown=node:node . .
 
 # Switch to the node user
 USER node
 
+RUN if [ "$REBUILD_PRISMA_CLIENT" = "true" ]; then \
+  npm db:sync && npx prisma generate; \
+  fi
 # Expose the port the app runs on
 EXPOSE 3000
 
