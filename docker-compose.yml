@@ -5,13 +5,42 @@ services:
       dockerfile: Dockerfile
     networks:
       - app-network
+      - app-mongo-network
+      - app-postgres-network
     ports:
-    #  - "3000:3000"    # Application port
-      - "9229:9229"    # Debugger port
+      - ${DEV_APP_PORT:-}   # Debugger port
     volumes:
-      - .:/srv/node/app  # Mount local directory to container
+      - .:/srv/node/app     # Mount local directory to container
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV:-development}
+    depends_on:
+      - postgres
+      - mongo
+
+  postgres:
+    image: postgres:latest
+    networks:
+      - app-postgres-network
+    ports:
+    #   - "5432:5432"    # PostgreSQL port
+      - ${DEV_POSTGRES_PORT:-}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  mongo:
+    image: mongo:latest
+    networks:
+      - app-mongo-network
+    ports:
+    #   - "27017:27017"  # MongoDB port
+      - ${DEV_MONGO_PORT:-}
+    volumes:
+      - mongo-data:/data/db
+
 
   nginx:
     image: nginx:alpine
@@ -29,3 +58,13 @@ services:
 networks:
   app-network:
     driver: bridge
+
+  app-mongo-network:
+    driver: bridge
+
+  app-postgres-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  mongo-data:
