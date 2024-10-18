@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "docker-compose up --build -d",
+    "dev": "docker compose up --build -d",
     "db:sync": "source .env && prisma db push"
   },
   "keywords": [],
