@@ -18,11 +18,13 @@ class PostgresAdapter {
   }
 
   async connect() {
-    const test = await this.#prisma.$queryRaw`SELECT 1=1;`;
+    const res = await this.#prisma.$queryRaw`SELECT 1=1;`;
 
-    console.log("Connected to Postgres:", test);
+    if (res) {
+      console.log("Connected to Postgres");
+    }
 
-    return test;
+    return !!res;
   }
 
   get $prisma() {

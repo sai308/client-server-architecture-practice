@@ -15,7 +15,6 @@ class MongoDBAdapter {
     }
 
     this.#client = new MongoClient(MONGODB_URI);
-    this.#database = null;
 
     MongoDBAdapter.instance = this;
 
@@ -27,8 +26,6 @@ class MongoDBAdapter {
       await this.#client.connect();
 
       console.log("Connected to MongoDB");
-
-      this.#database = this.#client.db(MONGODB_DB);
     } catch (error) {
       console.error("Error connecting to MongoDB:", error);
       throw error;
@@ -36,13 +33,7 @@ class MongoDBAdapter {
   }
 
   get $db() {
-    if (!this.#database) {
-      throw new Error(
-        "Database connection is not established. Please call connect() first."
-      );
-    }
-
-    return this.#database;
+    return this.#client.db(MONGODB_DB);
   }
 
   async close() {
