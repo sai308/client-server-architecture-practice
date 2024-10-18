@@ -6,10 +6,10 @@
       "type": "node",
       "request": "attach",
       "port": 9229,
-      "address": "localhost",
+      "address": "0.0.0.0", // Listen on all addresses
       "restart": true,
       "localRoot": "${workspaceFolder}",
-      "remoteRoot": "/srv/node/app",
+      "remoteRoot": "/srv/node/app", // Path inside the container
       "skipFiles": ["<node_internals>/**"]
     }
   ]
