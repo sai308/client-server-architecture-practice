@@ -1,5 +1,6 @@
 const { echoRoute } = require("./echo");
 const { resourcesRouter } = require("./resources");
+const { recipesRouter } = require("./recipes");
 
 /**
  * Patch the routing of the fastify instance
@@ -26,5 +27,6 @@ module.exports.patchRouting = (fastify) => {
 
   // Register routes
   fastify.register(echoRoute);
+  fastify.register(recipesRouter);
   fastify.register(resourcesRouter);
 };

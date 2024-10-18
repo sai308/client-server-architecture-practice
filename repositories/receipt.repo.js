@@ -22,7 +22,14 @@ class ReceiptRepository {
    * @param {object} data
    */
   async create(data) {
-    const result = await this.#collection.insertOne(data);
+    const { items } = data;
+
+    const newReceipt = {
+      items,
+      createdAt: new Date(),
+    };
+
+    const result = await this.#collection.insertOne(newReceipt);
 
     return result.insertedId;
   }
