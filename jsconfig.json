@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2022",
+    "checkJs": true,
+    /* Strict Type-Checking Options */
+    "strictNullChecks": false,
+    "noImplicitThis": true,
+    "strict": false
+  },
+  "typeAcquisition": {
+    "include": ["**/*.d.ts"]
+  }
+}
