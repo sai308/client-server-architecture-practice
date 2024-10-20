@@ -1,0 +1,24 @@
+# .husky/pre-commit
+# This hook is called by "git commit" and can be used to prevent a commit.
+
+# Formats the code and lints it before committing
+# Get a list of staged files for formatting
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
+
+if [ -n "$STAGED_FILES" ]; then
+  # Format files with Prettier
+  prettier $STAGED_FILES --write --ignore-unknown
+
+  # Update the Git index with the formatted files
+  echo "$STAGED_FILES" | xargs git add
+fi
+
+# Get a list of staged JavaScript files for linting
+STAGED_JS_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep '.*\.js$' | grep -v json | sed 's| |\\ |g')
+
+if [ -n "$STAGED_JS_FILES" ]; then
+  # Lint files with ESLint
+  eslint $STAGED_JS_FILES --fix
+fi
+
