@@ -8,9 +8,9 @@ services:
       - app-mongo-network
       - app-postgres-network
     ports:
-      - ${DEV_APP_PORT:-}   # Debugger port
+      - ${DEV_APP_PORT:-} # Debugger port
     volumes:
-      - .:/srv/node/app     # Mount local directory to container
+      - .:/srv/node/app # Mount local directory to container
     environment:
       - NODE_ENV=${NODE_ENV:-development}
       - APP_HOST=${APP_HOST:-0.0.0.0}
@@ -28,7 +28,7 @@ services:
     networks:
       - app-postgres-network
     ports:
-    #   - "5432:5432"    # PostgreSQL port
+      #   - "5432:5432"    # PostgreSQL port
       - ${DEV_POSTGRES_PORT:-}
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -42,7 +42,7 @@ services:
     networks:
       - app-mongo-network
     ports:
-    #   - "27017:27017"  # MongoDB port
+      #   - "27017:27017"  # MongoDB port
       - ${DEV_MONGO_PORT:-}
     volumes:
       - mongo-data:/data/db
@@ -54,11 +54,12 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "80:80"
+      - '80:80'
     networks:
       - app-network
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd:ro # Basic Auth
       - ./static:/usr/share/nginx/static:ro
       - ./html:/usr/share/nginx/html:ro
     depends_on:
