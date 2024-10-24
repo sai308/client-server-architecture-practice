@@ -11,6 +11,18 @@
       "localRoot": "${workspaceFolder}",
       "remoteRoot": "/srv/node/app", // Path inside the container
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Script (active file)",
+      "skipFiles": ["<node_internals>/**", "node_modules/**/*.js"],
+      "program": "${file}",
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development"
+      }
     }
   ]
 }
