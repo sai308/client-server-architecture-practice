@@ -1,10 +1,10 @@
-const { PORT, HOST } = require("./config");
+const { PORT, HOST } = require('./config');
 
-const { mongoDBAdapter } = require("./adapters/mongodb");
-const { postgresAdapter } = require("./adapters/postgres");
+const { mongoDBAdapter } = require('./src/infra/database/mongodb');
+const { postgresAdapter } = require('./src/infra/database/postgres');
 
 // Import the bootstrapFastify function from app.js
-const { bootstrapFastify } = require("./app");
+const { bootstrapFastify } = require('./app');
 
 // Declare a variable to hold the Fastify instance
 let fastify;
@@ -31,7 +31,7 @@ const startServer = async () => {
       fastify.log.error(err);
     } else {
       // Fallback to console logging if Fastify isn't initialized
-      console.error("Error starting server:", err);
+      console.error('Error starting server:', err);
     }
     // Exit the process with a failure code
     process.exit(1);
@@ -48,10 +48,10 @@ const shutdown = async (signal) => {
     try {
       // Close the Fastify server
       await fastify.close();
-      console.log("Fastify server closed.");
+      console.log('Fastify server closed.');
       process.exit(0);
     } catch (err) {
-      console.error("Error during shutdown:", err);
+      console.error('Error during shutdown:', err);
       process.exit(1);
     }
   } else {
@@ -61,21 +61,21 @@ const shutdown = async (signal) => {
 };
 
 // Listen for termination signals to initiate graceful shutdown
-process.on("SIGINT", () => shutdown("SIGINT"));
-process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
 
 // Handle unhandled promise rejections
-process.on("unhandledRejection", (reason, promise) => {
-  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
   // It's recommended to shut down the server in case of unhandled rejections
-  shutdown("unhandledRejection");
+  shutdown('unhandledRejection');
 });
 
 // Handle uncaught exceptions
-process.on("uncaughtException", (err) => {
-  console.error("Uncaught Exception:", err);
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
   // It's recommended to shut down the server in case of uncaught exceptions
-  shutdown("uncaughtException");
+  shutdown('uncaughtException');
 });
 
 // Start the server
