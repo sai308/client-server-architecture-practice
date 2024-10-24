@@ -1,25 +1,20 @@
 const { CartItem } = require('./CartItem');
 
+/**
+ * @type {Entities.Cart}
+ */
 class Cart {
   /**
-   * @param {Entities.Cart} params
+   * @param {EntityFields.Cart} params
    */
-  constructor({ id, user, items = [] }) {
+  constructor({ id, userId, items = [] }) {
     this.id = id;
-    this.user = user;
     this.items = items;
+    this.userId = userId;
   }
 
   /**
-   * Calculates the total amount for the cart.
-   * @returns {number}
-   */
-  get totalAmount() {
-    return this.items.reduce((total, item) => total + item.totalPrice, 0);
-  }
-
-  /**
-   * Adds an item to the cart.
+   * Adds a product to the cart or increases its quantity.
    * @param {Entities.Product} product
    * @param {number} quantity
    */
@@ -27,19 +22,39 @@ class Cart {
     const existingItem = this.items.find(
       (item) => item.product.id === product.id
     );
+
     if (existingItem) {
       existingItem.quantity += quantity;
     } else {
-      this.items.push(new CartItem({ product, quantity }));
+      this.items.push(
+        new CartItem({
+          product,
+          quantity,
+        })
+      );
     }
   }
 
   /**
-   * Removes an item from the cart by product ID.
+   * Decreases the quantity of a product or removes it if quantity reaches zero.
    * @param {string} productId
+   * @param {number} quantity
    */
-  removeItem(productId) {
-    this.items = this.items.filter((item) => item.product.id !== productId);
+  removeItem(productId, quantity = 1) {
+    const itemIndex = this.items.findIndex(
+      (item) => item.product.id === productId
+    );
+
+    if (itemIndex === -1) {
+      throw new Error('Product not found in cart');
+    }
+
+    const item = this.items[itemIndex];
+    item.quantity -= quantity;
+
+    if (item.quantity <= 0) {
+      this.items.splice(itemIndex, 1); // Remove item from cart
+    }
   }
 
   /**

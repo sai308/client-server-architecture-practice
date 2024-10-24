@@ -1,18 +1,14 @@
+/**
+ * @implements {Entities.CartItem}
+ */
 class CartItem {
   /**
-   * @param {Pick<Entities.CartItem, 'product' | 'quantity'>} params
+   * @param {EntityFields.CartItem} params
    */
-  constructor({ product, quantity }) {
+  constructor({ product, quantity, addedAt }) {
     this.product = product;
     this.quantity = quantity;
-  }
-
-  /**
-   * Calculates the total price for this cart item.
-   * @returns {number}
-   */
-  get totalPrice() {
-    return this.product.price * this.quantity;
+    this.addedAt = addedAt || new Date();
   }
 }
 

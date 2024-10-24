@@ -1,9 +1,13 @@
+/**
+ * @implements {Entities.User}
+ */
 class User {
   /**
-   * @param {Entities.User} params
+   * @param {EntityFields.User} params
    */
-  constructor({ id }) {
+  constructor({ id, cartRef }) {
     this.id = id;
+    this.cartRef = cartRef || null;
   }
 }
 

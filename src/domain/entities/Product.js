@@ -1,25 +1,16 @@
+/**
+ * @implements {Entities.Product}
+ */
 class Product {
   /**
-   * @param {Entities.Product} params
+   * @param {EntityFields.Product} params
    */
-  constructor({
-    id,
-    name,
-    description,
-    price,
-    releaseDate,
-    developer,
-    publisher,
-    categories,
-  }) {
+  constructor({ id, name, description, price, releaseDate }) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.price = price;
-    this.releaseDate = releaseDate;
-    this.developer = developer;
-    this.publisher = publisher;
-    this.categories = categories;
+    this.releaseDate = releaseDate || new Date();
   }
 }
 

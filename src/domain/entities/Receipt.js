@@ -1,10 +1,13 @@
+/**
+ * @implements {Entities.Receipt}
+ */
 class Receipt {
   /**
-   * @param {Entities.Receipt} params
+   * @param {EntityFields.Receipt} params
    */
-  constructor({ id, user, items, totalAmount, createdAt }) {
+  constructor({ id, userId, items, totalAmount, createdAt }) {
     this.id = id;
-    this.user = user;
+    this.userId = userId;
     this.items = items;
     this.totalAmount = totalAmount;
     this.createdAt = createdAt || new Date();
