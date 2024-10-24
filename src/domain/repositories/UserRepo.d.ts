@@ -1,7 +1,7 @@
 declare namespace Repositories {
-  interface UserRepository {
+  interface IUserRepository {
     getById(id: string): Promise<Entities.User | null>;
-    save(user: Entities.User): Promise<void>;
+    save(user: Entities.User): Promise<Entities.User>;
     // Additional methods as needed.
   }
 }

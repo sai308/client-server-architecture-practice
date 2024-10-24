@@ -1,8 +1,8 @@
 declare namespace Repositories {
-  interface ProductRepository {
+  interface IProductRepository {
     getById(id: string): Promise<Entities.Product | null>;
-    save(product: Entities.Product): Promise<void>;
-    update(product: Entities.Product): Promise<void>;
+    save(product: Entities.Product): Promise<Entities.Product>;
+    update(product: Entities.Product): Promise<Entities.Product>;
     delete(id: string): Promise<void>;
     find(filters: {
       term?: string;
