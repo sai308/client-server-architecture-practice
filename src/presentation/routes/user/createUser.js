@@ -6,22 +6,34 @@ const { CreateUserAction } = require('../../../app/actions/user/CreateUser');
 module.exports.createUser = {
   url: '/users',
   method: 'POST',
-  // schema: {
-  //   body: {
-  //     type: 'object',
-  //     // Since users are abstract without login credentials,
-  //     // you may not need any body parameters.
-  //     // If you require any, define them here.
-  //     properties: {
-  //       // Add properties if needed
-  //     },
-  //   },
-  // },
   handler: async (request, reply) => {
     const createUser = new CreateUserAction(request.server.domainContext);
 
     const user = await createUser.execute();
 
     return reply.code(201).send(user);
+  },
+  schema: {
+    tags: ['Users'],
+    headers: {
+      type: 'object',
+      properties: {
+        'x-user-id': {
+          type: 'string',
+          description: 'Target user ID',
+        },
+      },
+      required: ['x-user-id'],
+    },
+    response: {
+      201: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', format: 'uuid' }, // UUID for the ID
+          cartRef: { type: ['string', 'null'], nullable: true }, // cartRef can be either a string or null
+        },
+        required: ['id', 'cartRef'],
+      },
+    },
   },
 };
