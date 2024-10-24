@@ -6,6 +6,7 @@ const { IS_DEV_ENV } = require('./config');
 const { patchRouting } = require('./src/presentation/routes');
 const { patchContext } = require('./src/presentation/context');
 const { attachErrorHandlers } = require('./src/presentation/errors');
+const { patchDocs } = require('./src/presentation/docs');
 
 /**
  * Initializes and configures the Fastify instance
@@ -29,16 +30,25 @@ const bootstrapFastify = () => {
       },
     },
     disableRequestLogging: true,
+    ajv: {
+      customOptions: {
+        verbose: true, // Enables more detailed error messages
+        allErrors: true, // Collect all errors in a single response
+      },
+    },
   });
 
   // Attach error handlers
   attachErrorHandlers(fastify);
 
-  // Register plugins, routes, etc.
-  patchRouting(fastify);
+  // Register Swagger and Swagger UI [Must be registered before routes]
+  patchDocs(fastify);
 
   // Register context decorator
   patchContext(fastify);
+
+  // Register plugins, routes, etc.
+  patchRouting(fastify);
 
   if (IS_DEV_ENV) {
     // @ts-ignore - local dev dependency
