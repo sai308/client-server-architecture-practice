@@ -34,8 +34,5 @@ module.exports.patchDocs = (fastify) => {
       deepLinking: false,
     },
     exposeRoute: true,
-    transformSpecification: (swaggerObject, request, reply) => {
-      return swaggerObject;
-    },
   });
 };

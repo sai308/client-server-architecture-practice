@@ -1,7 +1,7 @@
 const { CartItem } = require('./CartItem');
 
 /**
- * @type {Entities.Cart}
+ * @implements {Entities.Cart}
  */
 class Cart {
   /**

@@ -1,9 +1,9 @@
 declare namespace Services {
   export class CheckoutService {
     constructor(dependencies: {
-      cartRepository: Repositories.CartRepository;
-      receiptRepository: Repositories.ReceiptRepository;
-      userRepository: Repositories.UserRepository;
+      cartRepository: Repositories.ICartRepository;
+      receiptRepository: Repositories.IReceiptRepository;
+      userRepository: Repositories.IUserRepository;
       pricingService: PricingService;
     });
 
