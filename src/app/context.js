@@ -1,5 +1,8 @@
 const { CheckoutService } = require('./../domain/services/checkout.service');
+const { AuthService } = require('./../domain/services/auth.service');
+
 const { pricingService } = require('./../domain/services/pricing.service');
+const { jwtService } = require('./../domain/services/jwt.service');
 
 const repositories = {
   ...require('./../infra/repositories/user.repo'),
@@ -10,9 +13,14 @@ const repositories = {
 
 const services = {
   pricingService,
+  jwtService,
   checkoutService: new CheckoutService({
     pricingService,
     ...repositories,
+  }),
+  authService: new AuthService({
+    ...repositories,
+    jwtService,
   }),
 };
 

@@ -1,5 +1,6 @@
 const { productsRouter } = require('./products');
 const { userRouter } = require('./user');
+const { authRouter } = require('./auth');
 
 /**
  * Patch the routing of the fastify instance
@@ -8,5 +9,6 @@ const { userRouter } = require('./user');
 module.exports.patchRouting = (fastify) => {
   // Register routes
   fastify.register(productsRouter);
+  fastify.register(authRouter);
   fastify.register(userRouter);
 };
