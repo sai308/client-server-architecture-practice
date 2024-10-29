@@ -32,9 +32,11 @@ COPY --chown=node:node . .
 # Switch to the node user
 USER node
 
-RUN if [ "$REBUILD_PRISMA_CLIENT" = "true" ]; then \
-  npm db:sync && npx prisma generate; \
-  fi
+# Conditionally sync the database and rebuild Prisma Client
+RUN if [ "$PRISMA_SYNC_DB" = "true" ]; then pnpm db:sync; fi && \
+  if [ "$PRISMA_REBUILD_CLIENT" = "true" ]; then pnpm db:client; fi
+
+
 # Expose the port the app runs on
 EXPOSE 3000
 
