@@ -1,7 +1,7 @@
 class CheckoutCartAction {
   /**
    * @param {Object} dependencies
-   * @param {Services.CheckoutService} dependencies.checkoutService
+   * @param {Services.ICheckoutService} dependencies.checkoutService
    * @param {Repositories.ICartRepository} dependencies.cartRepository
    */
   constructor({ checkoutService, cartRepository }) {

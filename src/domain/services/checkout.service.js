@@ -6,7 +6,7 @@ class CheckoutService {
    * @param {Repositories.ICartRepository} dependencies.cartRepository
    * @param {Repositories.IReceiptRepository} dependencies.receiptRepository
    * @param {Repositories.IUserRepository} dependencies.userRepository
-   * @param {Services.PricingService} dependencies.pricingService
+   * @param {Services.IPricingService} dependencies.pricingService
    */
   constructor({
     cartRepository,

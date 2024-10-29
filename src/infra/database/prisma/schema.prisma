@@ -18,6 +18,11 @@ model Product {
 }
 
 model User {
-  id      String  @id @default(uuid())
-  cartRef String?
+  id           String    @id @default(uuid())
+  username     String    @unique
+  passwordHash String
+  isPrivileged Boolean   @default(false)
+  cartRef      String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
 }
