@@ -20,6 +20,7 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+**/certs
 LICENSE
 README.md
 
@@ -30,4 +31,4 @@ package-lock.json
 
 # Ignore dev tools
 .vscode
-.huksy
+.husky
