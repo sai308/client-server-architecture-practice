@@ -17,6 +17,7 @@ module.exports.patchDocs = (fastify) => {
       consumes: ['application/json'],
       produces: ['application/json'],
       tags: [
+        { name: 'Auth', description: 'Authentication related end-points' },
         { name: 'Products', description: 'Product related end-points' },
         { name: 'Users', description: 'User related end-points' },
         { name: 'Cart', description: 'Cart related end-points' },
