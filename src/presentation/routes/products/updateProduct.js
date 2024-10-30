@@ -3,11 +3,17 @@ const {
 } = require('../../../app/actions/product/UpdateProduct');
 
 /**
- * @type {import('fastify').RouteOptions}
+ *
+ * @param {import('fastify').FastifyInstance} fastify
+ * @returns {import('fastify').RouteOptions}
  */
-module.exports.updateProduct = {
+module.exports.updateProduct = (fastify) => ({
   url: '/products/:id',
   method: 'PUT',
+  preValidation: fastify.auth([
+    fastify.authPipeFactory(),
+    fastify.authGuardFactory(),
+  ]),
   handler: async (request, reply) => {
     // @ts-ignore - This is a valid reference
     const { id } = request.params;
@@ -22,6 +28,16 @@ module.exports.updateProduct = {
   },
   schema: {
     tags: ['Products'],
+    headers: {
+      type: 'object',
+      properties: {
+        'x-auth-token': {
+          type: 'string',
+          description: 'Session access token',
+        },
+      },
+      required: ['x-auth-token'],
+    },
     params: {
       type: 'object',
       required: ['id'],
@@ -64,4 +80,4 @@ module.exports.updateProduct = {
       },
     },
   },
-};
+});

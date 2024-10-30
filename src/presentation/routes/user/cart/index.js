@@ -8,8 +8,8 @@ const { checkoutCart } = require('./CheckoutCart');
  * @param {import("fastify").FastifyInstance} fastify
  */
 module.exports.cartRouter = async function (fastify, opts) {
-  fastify.route(getCart);
-  fastify.route(addProductToCart);
-  fastify.route(removeProductFromCart);
-  fastify.route(checkoutCart);
+  fastify.route(getCart(fastify));
+  fastify.route(checkoutCart(fastify));
+  fastify.route(addProductToCart(fastify));
+  fastify.route(removeProductFromCart(fastify));
 };

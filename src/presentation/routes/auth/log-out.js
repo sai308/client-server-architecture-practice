@@ -15,6 +15,16 @@ module.exports.logOut = (fastify) => ({
   },
   schema: {
     tags: ['Auth'],
+    headers: {
+      type: 'object',
+      properties: {
+        'x-auth-token': {
+          type: 'string',
+          description: 'Session access token',
+        },
+      },
+      required: ['x-auth-token'],
+    },
     response: {
       204: {
         type: 'null',

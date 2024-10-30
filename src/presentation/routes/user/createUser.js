@@ -1,15 +1,24 @@
 const { CreateUserAction } = require('../../../app/actions/user/CreateUser');
 
 /**
- * @type {import('fastify').RouteOptions}
+ *
+ * @param {import('fastify').FastifyInstance} fastify
+ * @returns {import('fastify').RouteOptions}
  */
-module.exports.createUser = {
+module.exports.createUser = (fastify) => ({
   url: '/users',
   method: 'POST',
+  preValidation: fastify.auth([
+    fastify.authPipeFactory(),
+    fastify.authGuardFactory({ isPrivilegeRequired: true }),
+  ]),
   handler: async (request, reply) => {
+    // @ts-ignore - This is a valid call
+    const { username, password } = request.body;
+
     const createUser = new CreateUserAction(request.server.domainContext);
 
-    const user = await createUser.execute();
+    const user = await createUser.execute(username, password);
 
     return reply.code(201).send(user);
   },
@@ -18,22 +27,32 @@ module.exports.createUser = {
     headers: {
       type: 'object',
       properties: {
-        'x-user-id': {
+        'x-auth-token': {
           type: 'string',
-          description: 'Target user ID',
+          description: 'Session access token',
         },
       },
-      required: ['x-user-id'],
+      required: ['x-auth-token'],
+    },
+    body: {
+      type: 'object',
+      required: ['username', 'password'],
+      properties: {
+        username: { type: 'string', minLength: 4, maxLength: 32 },
+        password: { type: 'string', minLength: 8, maxLength: 32 },
+      },
+      additionalProperties: false, // Prevents unknown properties
     },
     response: {
       201: {
         type: 'object',
         properties: {
           id: { type: 'string', format: 'uuid' }, // UUID for the ID
+          username: { type: 'string' },
           cartRef: { type: ['string', 'null'], nullable: true }, // cartRef can be either a string or null
         },
         required: ['id', 'cartRef'],
       },
     },
   },
-};
+});

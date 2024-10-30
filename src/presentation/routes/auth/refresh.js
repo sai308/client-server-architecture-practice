@@ -9,10 +9,7 @@ const { HttpException } = require('../../errors/http');
 module.exports.refreshAuth = (fastify) => ({
   url: '/auth/refresh',
   method: 'PATCH',
-  preValidation: fastify.auth([
-    fastify.authPipeFactory(),
-    fastify.authGuardFactory(),
-  ]),
+  preValidation: fastify.auth([fastify.authPipeFactory()]),
   handler: async (request, reply) => {
     const _refreshToken = request.cookies['x-session'];
 
@@ -22,7 +19,7 @@ module.exports.refreshAuth = (fastify) => ({
 
     const { accessToken, refreshToken, user } = await new RefreshAuthAction(
       request.server.domainContext
-    ).execute(_refreshToken);
+    ).execute(_refreshToken, fastify.requestContext.get('sessionData'));
 
     return reply
       .setCookie('x-session', refreshToken, {
@@ -40,6 +37,16 @@ module.exports.refreshAuth = (fastify) => ({
   },
   schema: {
     tags: ['Auth'],
+    headers: {
+      type: 'object',
+      properties: {
+        'x-auth-token': {
+          type: 'string',
+          description: 'Session access token',
+        },
+      },
+      required: ['x-auth-token'],
+    },
     response: {
       200: {
         type: 'object',

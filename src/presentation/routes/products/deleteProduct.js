@@ -3,11 +3,17 @@ const {
 } = require('../../../app/actions/product/DeleteProduct');
 
 /**
- * @type {import('fastify').RouteOptions}
+ *
+ * @param {import('fastify').FastifyInstance} fastify
+ * @returns {import('fastify').RouteOptions}
  */
-module.exports.deleteProduct = {
+module.exports.deleteProduct = (fastify) => ({
   url: '/products/:id',
   method: 'DELETE',
+  preValidation: fastify.auth([
+    fastify.authPipeFactory(),
+    fastify.authGuardFactory(),
+  ]),
   handler: async (request, reply) => {
     // @ts-ignore - This is a valid reference
     const { id } = request.params;
@@ -19,6 +25,16 @@ module.exports.deleteProduct = {
   },
   schema: {
     tags: ['Products'],
+    headers: {
+      type: 'object',
+      properties: {
+        'x-auth-token': {
+          type: 'string',
+          description: 'Session access token',
+        },
+      },
+      required: ['x-auth-token'],
+    },
     params: {
       type: 'object',
       required: ['id'],
@@ -32,4 +48,4 @@ module.exports.deleteProduct = {
       },
     },
   },
-};
+});

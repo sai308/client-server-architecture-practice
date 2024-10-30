@@ -3,11 +3,17 @@ const {
 } = require('../../../../app/actions/receipt/GetReceipt');
 
 /**
- * @type {import('fastify').RouteOptions}
+ *
+ * @param {import('fastify').FastifyInstance} fastify
+ * @returns {import('fastify').RouteOptions}
  */
-module.exports.getReceipt = {
+module.exports.getReceipt = (fastify) => ({
   url: '/users/~/receipts/:receiptId',
   method: 'GET',
+  preValidation: fastify.auth([
+    fastify.authPipeFactory(),
+    fastify.authGuardFactory(),
+  ]),
   handler: async (request, reply) => {
     // @ts-ignore - This is a valid reference
     const { receiptId } = request.params;
@@ -66,4 +72,4 @@ module.exports.getReceipt = {
       },
     },
   },
-};
+});

@@ -3,13 +3,20 @@ const {
 } = require('../../../../app/actions/cart/AddProductToCart');
 
 /**
- * @type {import('fastify').RouteOptions}
+ *
+ * @param {import('fastify').FastifyInstance} fastify
+ * @returns {import('fastify').RouteOptions}
  */
-module.exports.addProductToCart = {
+
+module.exports.addProductToCart = (fastify) => ({
   url: '/users/~/cart/items',
   method: 'POST',
+  preValidation: fastify.auth([
+    fastify.authPipeFactory(),
+    fastify.authGuardFactory(),
+  ]),
   handler: async (request, reply) => {
-    const userId = `${request.headers['x-user-id']}`;
+    const { userId } = fastify.requestContext.get('sessionData');
 
     // @ts-ignore - This is a valid references
     const { productId, quantity } = request.body;
@@ -27,12 +34,12 @@ module.exports.addProductToCart = {
     headers: {
       type: 'object',
       properties: {
-        'x-user-id': {
+        'x-auth-token': {
           type: 'string',
-          description: 'Target user ID',
+          description: 'Session access token',
         },
       },
-      required: ['x-user-id'],
+      required: ['x-auth-token'],
     },
     body: {
       type: 'object',
@@ -82,4 +89,4 @@ module.exports.addProductToCart = {
       },
     },
   },
-};
+});

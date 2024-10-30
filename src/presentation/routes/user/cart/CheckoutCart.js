@@ -3,14 +3,19 @@ const {
 } = require('../../../../app/actions/cart/CheckoutCart');
 
 /**
- * @type {import('fastify').RouteOptions}
+ *
+ * @param {import('fastify').FastifyInstance} fastify
+ * @returns {import('fastify').RouteOptions}
  */
-
-module.exports.checkoutCart = {
+module.exports.checkoutCart = (fastify) => ({
   url: '/users/~/cart/checkout',
   method: 'POST',
+  preValidation: fastify.auth([
+    fastify.authPipeFactory(),
+    fastify.authGuardFactory(),
+  ]),
   handler: async (request, reply) => {
-    const userId = `${request.headers['x-user-id']}`;
+    const { userId } = fastify.requestContext.get('sessionData');
 
     const checkoutCart = new CheckoutCartAction(request.server.domainContext);
 
@@ -23,12 +28,12 @@ module.exports.checkoutCart = {
     headers: {
       type: 'object',
       properties: {
-        'x-user-id': {
+        'x-auth-token': {
           type: 'string',
-          description: 'Target user ID',
+          description: 'Session access token',
         },
       },
-      required: ['x-user-id'],
+      required: ['x-auth-token'],
     },
     response: {
       201: {
@@ -72,4 +77,4 @@ module.exports.checkoutCart = {
       },
     },
   },
-};
+});

@@ -6,6 +6,6 @@ const { getReceiptsList } = require('./getReceiptsList');
  * @param {import("fastify").FastifyInstance} fastify
  */
 module.exports.receiptsRouter = async function (fastify, opts) {
-  fastify.route(getReceipt);
-  fastify.route(getReceiptsList);
+  fastify.route(getReceipt(fastify));
+  fastify.route(getReceiptsList(fastify));
 };
