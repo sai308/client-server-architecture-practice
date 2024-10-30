@@ -14,8 +14,9 @@ class RefreshAuthAction {
   /**
    * Adds a product to the user's cart.
    * @param {string} refreshToken
+   * @param {Partial<Services.ISessionPayload>} [_sessionData]
    */
-  async execute(refreshToken) {
+  async execute(refreshToken, _sessionData) {
     if (!refreshToken) {
       throw new HttpException(401, 'Invalid credentials are provided');
     }
