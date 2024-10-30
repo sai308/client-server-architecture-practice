@@ -8,7 +8,6 @@ const {
 module.exports.getProducts = {
   url: '/products',
   method: 'GET',
-
   handler: async (request, reply) => {
     // @ts-ignore - This is a valid references
     const { term, limit, page, sort } = request.query;

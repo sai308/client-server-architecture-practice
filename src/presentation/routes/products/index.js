@@ -10,9 +10,10 @@ const { deleteProduct } = require('./deleteProduct');
  * @param {import("fastify").FastifyInstance} fastify
  */
 module.exports.productsRouter = async function (fastify, opts) {
-  fastify.route(createProduct);
   fastify.route(getProduct);
   fastify.route(getProducts);
-  fastify.route(updateProduct);
-  fastify.route(deleteProduct);
+
+  fastify.route(createProduct(fastify));
+  fastify.route(updateProduct(fastify));
+  fastify.route(deleteProduct(fastify));
 };

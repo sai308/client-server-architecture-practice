@@ -9,8 +9,8 @@ const { receiptsRouter } = require('./receipts');
  * @param {import("fastify").FastifyInstance} fastify
  */
 module.exports.userRouter = async function (fastify, opts) {
-  fastify.route(getUser);
-  fastify.route(createUser);
+  fastify.route(getUser(fastify));
+  fastify.route(createUser(fastify));
 
   fastify.register(cartRouter);
   fastify.register(receiptsRouter);

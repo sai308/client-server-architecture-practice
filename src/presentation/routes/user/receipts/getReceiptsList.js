@@ -3,14 +3,19 @@ const {
 } = require('../../../../app/actions/receipt/ListReceipts');
 
 /**
- * @type {import('fastify').RouteOptions}
+ *
+ * @param {import('fastify').FastifyInstance} fastify
+ * @returns {import('fastify').RouteOptions}
  */
-module.exports.getReceiptsList = {
+module.exports.getReceiptsList = (fastify) => ({
   url: '/users/~/receipts',
   method: 'GET',
+  preValidation: fastify.auth([
+    fastify.authPipeFactory(),
+    fastify.authGuardFactory(),
+  ]),
   handler: async (request, reply) => {
-    const userId = `${request.headers['x-user-id']}`;
-
+    const { userId } = fastify.requestContext.get('sessionData');
     const listReceiptsForUser = new ListReceiptsForUserAction(
       request.server.domainContext
     );
@@ -24,12 +29,12 @@ module.exports.getReceiptsList = {
     headers: {
       type: 'object',
       properties: {
-        'x-user-id': {
+        'x-auth-token': {
           type: 'string',
-          description: 'Target user ID',
+          description: 'Session access token',
         },
       },
-      required: ['x-user-id'],
+      required: ['x-auth-token'],
     },
     response: {
       200: {
@@ -75,4 +80,4 @@ module.exports.getReceiptsList = {
       },
     },
   },
-};
+});

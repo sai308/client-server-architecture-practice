@@ -4,12 +4,18 @@ const {
 
 module.exports = {
   /**
-   * @type {import('fastify').RouteOptions}
+   *
+   * @param {import('fastify').FastifyInstance} fastify
+   * @returns {import('fastify').RouteOptions}
    */
-  createProduct: {
+  createProduct: (fastify) => ({
     url: '/products',
     method: 'POST',
     bodyLimit: 1024,
+    preValidation: fastify.auth([
+      fastify.authPipeFactory(),
+      fastify.authGuardFactory(),
+    ]),
     handler: async (request, reply) => {
       const productData = request.body;
 
@@ -24,6 +30,16 @@ module.exports = {
     },
     schema: {
       tags: ['Products'],
+      headers: {
+        type: 'object',
+        properties: {
+          'x-auth-token': {
+            type: 'string',
+            description: 'Session access token',
+          },
+        },
+        required: ['x-auth-token'],
+      },
       body: {
         type: 'object',
         required: ['name', 'price'],
@@ -36,5 +52,5 @@ module.exports = {
         additionalProperties: false, // Prevents unknown properties
       },
     },
-  },
+  }),
 };
