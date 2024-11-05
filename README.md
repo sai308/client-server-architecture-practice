@@ -1,4 +1,4 @@
-# Project Name
+# Client-server architecture practice project
 
 A REST API application server built with Node.js, featuring a layered architecture for handling user authentication, product management, shopping cart functionality, and order processing. The application is structured with clear separation of concerns and uses MongoDB and PostgreSQL as the primary data storage solutions. It is designed to be secure, extensible, and efficient, leveraging Fastify for server functionality and Prisma for PostgreSQL ORM.
 
