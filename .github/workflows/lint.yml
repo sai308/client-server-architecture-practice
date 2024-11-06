@@ -1,4 +1,4 @@
-name: Run Unit Tests
+name: Lint Codebase
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,11 +19,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22' # Use the Node.js version your project requires
+          node-version: '22' # Adjust based on your project's requirements
 
       - name: Install dependencies
         run: npm install
 
-      # Run unit tests
-      - name: Run unit tests
-        run: npm test
+      # Run ESLint
+      - name: Run ESLint
+        run: npm run lint
