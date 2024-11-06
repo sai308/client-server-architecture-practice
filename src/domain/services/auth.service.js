@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 
 const { User } = require('../entities/User');
+const { HttpException } = require('../../presentation/errors/http');
 
 /**
  * @implements {Services.IAuthService}
@@ -56,11 +57,11 @@ class AuthService {
   async authenticateUser(username, password) {
     const user = await this.userRepository.getByUsername(username);
 
-    if (!user) throw new Error('User not found');
+    if (!user) throw new HttpException(404, 'User not found');
 
     const valid = await bcrypt.compare(password, user.passwordHash);
 
-    if (!valid) throw new Error('Invalid credentials');
+    if (!valid) throw new HttpException(401, 'Invalid credentials');
 
     // Remove sensitive data after successful authentication
     user.passwordHash = null;
@@ -103,7 +104,7 @@ class AuthService {
       this.jwtService.verifyAccessToken(token)
     );
 
-    if (!payload) throw new Error('Invalid access token');
+    if (!payload) throw new HttpException(401, 'Invalid access token');
 
     return {
       userId: payload.userId,
