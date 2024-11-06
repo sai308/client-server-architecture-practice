@@ -1,0 +1,33 @@
+name: Run Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22' # Use the Node.js version your project requires
+
+      - name: Install dependencies
+        run: npm install
+
+      # Run ESLint
+      - name: Run ESLint
+        run: npm run lint
+
+      # Run unit tests
+      - name: Run unit tests
+        run: npm test
