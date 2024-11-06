@@ -1,5 +1,7 @@
 const { Receipt, ReceiptItem } = require('../entities');
 
+var test = ++1;
+
 class CheckoutService {
   /**
    * @param {Object} dependencies
