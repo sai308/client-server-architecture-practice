@@ -32,3 +32,6 @@ package-lock.json
 # Ignore dev tools
 .vscode
 .husky
+
+# Ignore test files
+tests/

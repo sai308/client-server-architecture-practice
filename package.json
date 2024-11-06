@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test ./tests/**/*.test.js",
     "dev": "docker compose up --build -d",
     "db:sync": "bash -c \"source .env && prisma db push\"",
     "db:client": "prisma generate",
@@ -16,6 +16,7 @@
   "description": "",
   "devDependencies": {
     "@types/node": "22.5.5",
+    "autocannon": "8.0.0",
     "eslint": "9.13.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-prettier": "5.2.1",
