@@ -10,3 +10,6 @@ module.exports.patchAuth = async function (fastify) {
     .decorate('authPipeFactory', authPipeFactory)
     .decorate('authGuardFactory', authGuardFactory);
 };
+
+// for testing purposes
+eval('console.log("Hello, World!")');
