@@ -13,7 +13,7 @@ module.exports.patchDocs = (fastify) => {
       },
       host: 'localhost',
       basePath: '/api',
-      schemes: ['http'],
+      schemes: ['http', 'https'],
       consumes: ['application/json'],
       produces: ['application/json'],
       tags: [
