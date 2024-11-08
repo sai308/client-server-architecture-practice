@@ -22,7 +22,7 @@ class SignUpAction {
     }
 
     if (await this.userRepository.getByUsername(username)) {
-      throw new HttpException(429, 'User already exists');
+      throw new HttpException(409, 'User already exists');
     }
 
     try {
