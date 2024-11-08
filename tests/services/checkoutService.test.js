@@ -1,5 +1,5 @@
 const assert = require('node:assert');
-const { describe, it } = require('node:test');
+const { mock, describe, it } = require('node:test');
 const {
   CheckoutService,
 } = require('../../src/domain/services/checkout.service');
@@ -14,7 +14,7 @@ const mockCartRepository = {
     userId === '1'
       ? { items: [{ product: { id: '101', price: 50 }, quantity: 2 }] }
       : null,
-  deleteByUserId: async (userId) => (userId === '1' ? true : null),
+  deleteByUserId: mock.fn(async (userId) => (userId === '1' ? true : null)),
 };
 const mockReceiptRepository = { save: async (receipt) => receipt };
 
@@ -32,10 +32,17 @@ describe('CheckoutService', () => {
   it('🛒 should generate a receipt and clear the cart upon checkout', async () => {
     const userId = '1';
     const receipt = await checkoutService.checkout(userId);
+
     assert.strictEqual(
       receipt.userId,
       userId,
       'Receipt userId should match provided userId'
+    );
+
+    assert.strictEqual(
+      mockCartRepository.deleteByUserId.mock.callCount(),
+      1,
+      'Cart should be cleared after checkout'
     );
 
     assert.ok(receipt.totalAmount, 'Receipt should have a total amount');
