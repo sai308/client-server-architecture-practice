@@ -24,4 +24,10 @@ declare namespace Entities {
       this.releaseDate = fields.releaseDate;
     }
   }
+
+  export type ProductsList = {
+    items: Product[];
+    total: number;
+    page: number;
+  };
 }

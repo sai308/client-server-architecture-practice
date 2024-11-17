@@ -8,6 +8,9 @@ module.exports = {
   NODE_ENV: process.env.NODE_ENV,
   IS_DEV_ENV: process.env.NODE_ENV === 'development',
 
+  REDIS_HOST: process.env.REDIS_HOST || 'localhost',
+  REDIS_PORT: +process.env.REDIS_PORT || 6379,
+
   MONGODB_DB: process.env.MONGO_DB || 'mydb',
   MONGODB_URI:
     process.env.APP_MONGO_DATABASE_URL || 'mongodb://localhost:27017',

@@ -14,7 +14,11 @@ let fastify;
  */
 const startServer = async () => {
   try {
-    await Promise.all([mongoDBAdapter.connect(), postgresAdapter.connect()]);
+    await Promise.all([
+      mongoDBAdapter.connect(),
+      postgresAdapter.connect(),
+      // redisClient.connect(), // Already connected in the adapter (auto-connect)
+    ]);
 
     // Initialize Fastify by calling bootstrapFastify
     fastify = bootstrapFastify();

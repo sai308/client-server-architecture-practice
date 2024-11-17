@@ -2,10 +2,21 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ${DOCKERFILE:-Dockerfile}
+
+    deploy:
+      resources:
+        limits:
+          memory: 8G # Set the maximum memory limit
+          cpus: '5.0' # Set the maximum CPU limit
+        reservations:
+          memory: 4G # Set the guaranteed memory (less than or equal to `limits.memory`)
+          cpus: '4.0' # Set the guaranteed CPU (less than or equal to `limits.cpus`)
+
     networks:
       - app-network
       - app-mongo-network
+      - app-redis-network
       - app-postgres-network
     ports:
       - ${DEV_APP_PORT:-} # Debugger port
@@ -23,6 +34,7 @@ services:
     depends_on:
       - postgres
       - mongo
+      - redis
 
   postgres:
     image: postgres:latest
@@ -52,6 +64,14 @@ services:
     #  - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
     #  - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
 
+  redis:
+    image: redis:latest
+    ports:
+      #  - '6379:6379' # Redis port
+      - ${DEV_REDIS_PORT:-}
+    networks:
+      - app-redis-network
+
   nginx:
     image: nginx:alpine
     ports:
@@ -76,6 +96,9 @@ networks:
     driver: bridge
 
   app-postgres-network:
+    driver: bridge
+
+  app-redis-network:
     driver: bridge
 
 volumes:

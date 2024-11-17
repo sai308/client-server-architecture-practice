@@ -61,23 +61,26 @@ class ProductRepository {
   async find(filters) {
     const { term, limit = 10, offset = 0, sort = 'releaseDate' } = filters;
 
-    const productsData = await this.#db.product.findMany({
-      where: term ? { name: { contains: term } } : {},
-      skip: offset,
-      take: limit,
-      orderBy: { [sort]: 'desc' },
-    });
+    /** @type {import('@prisma/client').Prisma.ProductWhereInput} */
+    const whereClause = term
+      ? { name: { contains: term, mode: 'insensitive' } }
+      : {};
 
-    return productsData.map(
-      (productData) =>
-        new Product({
-          id: productData.id,
-          name: productData.name,
-          description: productData.description,
-          price: productData.price,
-          releaseDate: productData.releaseDate,
-        })
-    );
+    const [products, total] = await Promise.all([
+      this.#db.product.findMany({
+        where: whereClause,
+        skip: offset,
+        take: limit,
+        orderBy: { [sort]: 'desc' },
+      }),
+      this.#db.product.count({ where: whereClause }),
+    ]);
+
+    return {
+      items: products.map((product) => new Product(product)),
+      page: Math.ceil(offset / limit) + 1,
+      total,
+    };
   }
 }
 

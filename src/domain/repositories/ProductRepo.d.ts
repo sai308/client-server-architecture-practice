@@ -9,6 +9,6 @@ declare namespace Repositories {
       limit?: number;
       offset?: number;
       sort?: string;
-    }): Promise<Entities.Product[]>;
+    }): Promise<Entities.ProductsList>;
   }
 }

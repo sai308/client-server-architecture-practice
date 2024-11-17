@@ -38,18 +38,25 @@ module.exports.getProducts = {
     },
     response: {
       200: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: { type: 'string', format: 'uuid' }, // UUID for product ID
-            name: { type: 'string' },
-            description: { type: 'string' },
-            price: { type: 'number', minimum: 0 },
-            releaseDate: { type: 'string', format: 'date-time' },
+        type: 'object',
+        properties: {
+          items: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' }, // UUID for product ID
+                name: { type: 'string' },
+                description: { type: 'string' },
+                price: { type: 'number', minimum: 0 },
+                releaseDate: { type: 'string', format: 'date-time' },
+              },
+              required: ['id', 'name', 'description', 'price', 'releaseDate'],
+              additionalProperties: false, // Prevents extra properties
+            },
           },
-          required: ['id', 'name', 'description', 'price', 'releaseDate'],
-          additionalProperties: false, // Prevents extra properties
+          page: { type: 'integer' },
+          total: { type: 'integer' },
         },
       },
     },
